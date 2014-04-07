@@ -1,0 +1,9 @@
+apply plugin: 'java'
+apply plugin: 'sonar-runner'
+
+repositories {
+    mavenCentral()
+}
+
+group = 'org.json'
+version = '1.0-SNAPSHOT'
