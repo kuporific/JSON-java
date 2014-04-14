@@ -5,3 +5,4 @@ build/
 # IntelliJ generated files/folders
 *.iml
 .idea/
+out/
