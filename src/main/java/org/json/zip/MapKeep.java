@@ -65,7 +65,7 @@ class MapKeep extends Keep {
             if (usage > 0) {
                 this.uses[to] = usage;
                 this.list[to] = key;
-                this.map.put(key, new Integer(to));
+                this.map.put(key, to);
                 to += 1;
             } else {
                 this.map.remove(key);
@@ -91,7 +91,7 @@ class MapKeep extends Keep {
      */
     public int find(Object key) {
         Object o = this.map.get(key);
-        return o instanceof Integer ? ((Integer) o).intValue() : none;
+        return o instanceof Integer ? (Integer) o : none;
     }
 
     public boolean postMortem(PostMortem pm) {
@@ -141,7 +141,7 @@ class MapKeep extends Keep {
             compact();
         }
         this.list[this.length] = value;
-        this.map.put(value, new Integer(this.length));
+        this.map.put(value, this.length);
         this.uses[this.length] = 1;
         if (JSONzip.probe) {
             JSONzip.log("<" + this.length + " " + value + "> ");
