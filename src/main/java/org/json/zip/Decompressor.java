@@ -233,7 +233,7 @@ public class Decompressor extends JSONzip {
 
     private String readString() throws JSONException {
         Kim kim;
-        int from = 0;
+        int from;
         int thru = 0;
         int previousFrom = none;
         int previousThru = 0;
@@ -256,7 +256,6 @@ public class Decompressor extends JSONzip {
                 previousThru = thru;
                 one = bit();
             } else {
-                from = none;
                 while (true) {
                     int c = this.substringhuff.read(this.bitreader);
                     if (c == end) {

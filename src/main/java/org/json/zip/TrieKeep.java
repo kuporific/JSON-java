@@ -357,8 +357,7 @@ class TrieKeep extends Keep {
                     int thru = this.thrus[from];
                     Node node = this.root;
                     for (int at = this.froms[from]; at < thru; at += 1) {
-                        Node next = node.vet(kim.get(at));
-                        node = next;
+                        node = node.vet(kim.get(at));
                     }
                     node.integer = to;
                     this.uses[to] = age(this.uses[from]);

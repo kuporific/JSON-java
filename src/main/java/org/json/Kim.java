@@ -309,13 +309,9 @@ public class Kim {
             return false;
         }
         Kim that = (Kim) obj;
-        if (this == that) {
-            return true;
-        }
-        if (this.hashcode != that.hashcode) {
-            return false;
-        }
-        return java.util.Arrays.equals(this.bytes, that.bytes);
+        return this == that
+                || this.hashcode == that.hashcode
+                && java.util.Arrays.equals(this.bytes, that.bytes);
     }
 
     /**

@@ -465,7 +465,6 @@ public class Compressor extends JSONzip {
             if (previousFrom != none) {
                 this.substringkeep.registerOne(kim, previousFrom,
                         previousThru);
-                previousFrom = none;
             }
             previousFrom = at;
             previousThru = from + 1;
