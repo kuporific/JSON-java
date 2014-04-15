@@ -30,8 +30,8 @@ import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * A JSONArray is an ordered sequence of values. Its external text form is a
@@ -82,13 +82,12 @@ public class JSONArray {
     /**
      * The arrayList where the JSONArray's properties are kept.
      */
-    private final ArrayList myArrayList;
+    private final ArrayList<Object> myArrayList = new ArrayList<>();
 
     /**
      * Construct an empty JSONArray.
      */
     public JSONArray() {
-        this.myArrayList = new ArrayList();
     }
 
     /**
@@ -100,7 +99,6 @@ public class JSONArray {
      *             If there is a syntax error.
      */
     public JSONArray(JSONTokener x) throws JSONException {
-        this();
         if (x.nextClean() != '[') {
             throw x.syntaxError("A JSONArray text must start with '['");
         }
@@ -150,12 +148,12 @@ public class JSONArray {
      * @param collection
      *            A Collection.
      */
-    public JSONArray(Collection collection) {
-        this.myArrayList = new ArrayList();
+    public JSONArray(Collection<Object> collection) {
         if (collection != null) {
-            for (Object object : collection) {
-                this.myArrayList.add(JSONObject.wrap(object));
-            }
+            myArrayList.addAll(
+                    collection.stream()
+                            .map(JSONObject::wrap)
+                            .collect(Collectors.toList()));
         }
     }
 
@@ -166,7 +164,6 @@ public class JSONArray {
      *             If not an array.
      */
     public JSONArray(Object array) throws JSONException {
-        this();
         if (array.getClass().isArray()) {
             int length = Array.getLength(array);
             for (int i = 0; i < length; i += 1) {
@@ -592,7 +589,7 @@ public class JSONArray {
      *            A Collection value.
      * @return this.
      */
-    public JSONArray put(Collection value) {
+    public JSONArray put(Collection<Object> value) {
         this.put(new JSONArray(value));
         return this;
     }
@@ -693,7 +690,8 @@ public class JSONArray {
      * @throws JSONException
      *             If the index is negative or if the value is not finite.
      */
-    public JSONArray put(int index, Collection value) throws JSONException {
+    public JSONArray put(int index, Collection<Collection> value)
+            throws JSONException {
         this.put(index, new JSONArray(value));
         return this;
     }
@@ -811,9 +809,8 @@ public class JSONArray {
      *         was no value.
      */
     public Object remove(int index) {
-        Object o = this.opt(index);
-        this.myArrayList.remove(index);
-        return o;
+        return (index < 0 || index >= this.length()) ? null : this.myArrayList
+                .remove(index);
     }
 
     /**
