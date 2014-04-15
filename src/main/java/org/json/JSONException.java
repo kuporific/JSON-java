@@ -8,13 +8,12 @@ package org.json;
  */
 public class JSONException extends RuntimeException {
     private static final long serialVersionUID = 0;
-    private Throwable cause;
 
     /**
      * Constructs a JSONException with an explanatory message.
      *
      * @param message
-     *            Detail about the reason for the exception.
+     *     Detail about the reason for the exception.
      */
     public JSONException(String message) {
         super(message);
@@ -22,20 +21,23 @@ public class JSONException extends RuntimeException {
 
     /**
      * Constructs a new JSONException with the specified cause.
+     *
+     * @param cause
+     *     The cause of this exception.
      */
     public JSONException(Throwable cause) {
-        super(cause.getMessage());
-        this.cause = cause;
+        super(cause);
     }
 
     /**
-     * Returns the cause of this exception or null if the cause is nonexistent
-     * or unknown.
+     * Constructs a new JSONException with the specified message and cause.
      *
-     * @returns the cause of this exception or null if the cause is nonexistent
-     *          or unknown.
+     * @param message
+     *     Detail about the reason for the exception.
+     * @param cause
+     *     The cause of this exception.
      */
-    public Throwable getCause() {
-        return this.cause;
+    public JSONException(String message, Throwable cause) {
+        super(message, cause);
     }
 }
