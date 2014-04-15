@@ -135,7 +135,7 @@ public class JSONObject {
     /**
      * The map where the JSONObject's properties are kept.
      */
-    private final Map map;
+    private final Map<String, Object> map = new HashMap<>();
 
     /**
      * It is sometimes more convenient and less ambiguous to have a
@@ -149,7 +149,6 @@ public class JSONObject {
      * Construct an empty JSONObject.
      */
     public JSONObject() {
-        this.map = new HashMap();
     }
 
     /**
@@ -167,7 +166,6 @@ public class JSONObject {
      *                duplicated.
      */
     public JSONObject(JSONObject jo, String[] names) {
-        this();
         for (String name : names) {
             try {
                 this.putOnce(name, jo.opt(name));
@@ -186,7 +184,6 @@ public class JSONObject {
      *             duplicated key.
      */
     public JSONObject(JSONTokener x) throws JSONException {
-        this();
         char c;
         String key;
 
@@ -239,16 +236,14 @@ public class JSONObject {
      *            the JSONObject.
      * @throws JSONException
      */
-    public JSONObject(Map map) {
-        this.map = new HashMap();
+    public JSONObject(Map<String, Object> map) {
         if (map != null) {
-            for (Object o : map.entrySet()) {
-                Map.Entry e = (Map.Entry) o;
-                Object value = e.getValue();
-                if (value != null) {
-                    this.map.put(e.getKey(), wrap(value));
-                }
-            }
+            map.entrySet().stream().forEach(entry -> {
+                        Object value = entry.getValue();
+                        if (value != null) {
+                            this.map.put(entry.getKey(), wrap(value));
+                        }
+                    });
         }
     }
 
@@ -705,7 +700,7 @@ public class JSONObject {
      *
      * @return An iterator of the keys.
      */
-    public Iterator keys() {
+    public Iterator<String> keys() {
         return this.keySet().iterator();
     }
 
@@ -714,7 +709,7 @@ public class JSONObject {
      *
      * @return A keySet.
      */
-    public Set keySet() {
+    public Set<String> keySet() {
         return this.map.keySet();
     }
 
@@ -1037,7 +1032,7 @@ public class JSONObject {
      * @return this.
      * @throws JSONException
      */
-    public JSONObject put(String key, Collection value) throws JSONException {
+    public JSONObject put(String key, Collection<Object> value) throws JSONException {
         this.put(key, new JSONArray(value));
         return this;
     }
@@ -1101,7 +1096,8 @@ public class JSONObject {
      * @return this.
      * @throws JSONException
      */
-    public JSONObject put(String key, Map value) throws JSONException {
+    public JSONObject put(String key, Map<String, Object> value)
+            throws JSONException {
         this.put(key, new JSONObject(value));
         return this;
     }
@@ -1456,10 +1452,14 @@ public class JSONObject {
             return value.toString();
         }
         if (value instanceof Map) {
-            return new JSONObject((Map) value).toString();
+            @SuppressWarnings("unchecked")
+            Map<String, Object> cast = (Map<String, Object>) value;
+            return new JSONObject(cast).toString();
         }
         if (value instanceof Collection) {
-            return new JSONArray((Collection) value).toString();
+            @SuppressWarnings("unchecked")
+            Collection<Object> cast = (Collection<Object>) value;
+            return new JSONArray(cast).toString();
         }
         if (value.getClass().isArray()) {
             return new JSONArray(value).toString();
@@ -1495,13 +1495,17 @@ public class JSONObject {
             }
 
             if (object instanceof Collection) {
-                return new JSONArray((Collection) object);
+                @SuppressWarnings("unchecked")
+                Collection<Object> cast = (Collection<Object>) object;
+                return new JSONArray(cast);
             }
             if (object.getClass().isArray()) {
                 return new JSONArray(object);
             }
             if (object instanceof Map) {
-                return new JSONObject((Map) object);
+                @SuppressWarnings("unchecked")
+                Map<String, Object> cast = (Map<String, Object>) object;
+                return new JSONObject(cast);
             }
             Package objectPackage = object.getClass().getPackage();
             String objectPackageName = objectPackage != null ? objectPackage
@@ -1539,10 +1543,13 @@ public class JSONObject {
         } else if (value instanceof JSONArray) {
             ((JSONArray) value).write(writer, indentFactor, indent);
         } else if (value instanceof Map) {
-            new JSONObject((Map) value).write(writer, indentFactor, indent);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> cast = (Map<String, Object>) value;
+            new JSONObject(cast).write(writer, indentFactor, indent);
         } else if (value instanceof Collection) {
-            new JSONArray((Collection) value).write(writer, indentFactor,
-                    indent);
+            @SuppressWarnings("unchecked")
+            Collection<Object> cast = (Collection<Object>) value;
+            new JSONArray(cast).write(writer, indentFactor, indent);
         } else if (value.getClass().isArray()) {
             new JSONArray(value).write(writer, indentFactor, indent);
         } else if (value instanceof Number) {
@@ -1583,12 +1590,12 @@ public class JSONObject {
         try {
             boolean commanate = false;
             final int length = this.length();
-            Iterator keys = this.keys();
+            Iterator<String> keys = this.keys();
             writer.write('{');
 
             if (length == 1) {
-                Object key = keys.next();
-                writer.write(quote(key.toString()));
+                String key = keys.next();
+                writer.write(quote(key));
                 writer.write(':');
                 if (indentFactor > 0) {
                     writer.write(' ');
@@ -1597,7 +1604,7 @@ public class JSONObject {
             } else if (length != 0) {
                 final int newindent = indent + indentFactor;
                 while (keys.hasNext()) {
-                    Object key = keys.next();
+                    String key = keys.next();
                     if (commanate) {
                         writer.write(',');
                     }
@@ -1605,7 +1612,7 @@ public class JSONObject {
                         writer.write('\n');
                     }
                     indent(writer, newindent);
-                    writer.write(quote(key.toString()));
+                    writer.write(quote(key));
                     writer.write(':');
                     if (indentFactor > 0) {
                         writer.write(' ');
