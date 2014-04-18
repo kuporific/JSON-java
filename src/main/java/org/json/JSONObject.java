@@ -287,7 +287,7 @@ public class JSONObject extends JSONBase<String> {
      *            An array of strings, the names of the fields to be obtained
      *            from the object.
      */
-    public JSONObject(Object object, String names[]) {
+    public JSONObject(Object object, String[] names) {
         this();
         Class c = object.getClass();
         for (String name : names) {
@@ -919,17 +919,16 @@ public class JSONObject extends JSONBase<String> {
      * @return A simple JSON value.
      */
     public static Object stringToValue(String string) {
-        Double d;
-        if (string.equals("")) {
-            return string;
+        if (string == null || string.isEmpty()) {
+            return "";
         }
-        if (string.equalsIgnoreCase("true")) {
+        if ("true".equalsIgnoreCase(string)) {
             return Boolean.TRUE;
         }
-        if (string.equalsIgnoreCase("false")) {
+        if ("false".equalsIgnoreCase(string)) {
             return Boolean.FALSE;
         }
-        if (string.equalsIgnoreCase("null")) {
+        if ("null".equalsIgnoreCase(string)) {
             return JSONObject.NULL;
         }
 
@@ -943,7 +942,7 @@ public class JSONObject extends JSONBase<String> {
             try {
                 if (string.indexOf('.') > -1 || string.indexOf('e') > -1
                         || string.indexOf('E') > -1) {
-                    d = Double.valueOf(string);
+                    Double d = Double.valueOf(string);
                     if (!d.isInfinite() && !d.isNaN()) {
                         return d;
                     }
@@ -972,18 +971,14 @@ public class JSONObject extends JSONBase<String> {
      *             If o is a non-finite number.
      */
     public static void testValidity(Object o) throws JSONException {
-        if (o != null) {
-            if (o instanceof Double) {
-                if (((Double) o).isInfinite() || ((Double) o).isNaN()) {
-                    throw new JSONException(
-                            "JSON does not allow non-finite numbers.");
-                }
-            } else if (o instanceof Float) {
-                if (((Float) o).isInfinite() || ((Float) o).isNaN()) {
-                    throw new JSONException(
-                            "JSON does not allow non-finite numbers.");
-                }
-            }
+        if (
+            o instanceof Double
+                && (((Double) o).isInfinite() || ((Double) o).isNaN())
+            || o instanceof Float
+                && (((Float) o).isInfinite() || ((Float) o).isNaN()))
+        {
+            throw new JSONException(
+                    "JSON does not allow non-finite numbers.");
         }
     }
 
