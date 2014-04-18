@@ -100,7 +100,7 @@ class MapKeep extends Keep {
             JSONzip.log(this.length + " <> " + that.length);
             return false;
         }
-        for (int i = 0; i < this.length; i += 1) {
+        for (int i = 0; i < this.length; i++) {
             boolean b;
             if (this.list[i] instanceof Kim) {
                 b = this.list[i].equals(that.list[i]);

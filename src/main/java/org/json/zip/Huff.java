@@ -137,13 +137,13 @@ public class Huff implements None, PostMortem {
 
 // Make the leaf symbols.
 
-        for (int i = 0; i < domain; i += 1) {
+        for (int i = 0; i < domain; i++) {
             symbols[i] = new Symbol(i);
         }
 
 // SMake the links.
 
-        for (int i = domain; i < length; i += 1) {
+        for (int i = domain; i < length; i++) {
             symbols[i] = new Symbol(none);
         }
     }
@@ -166,7 +166,7 @@ public class Huff implements None, PostMortem {
 
             this.table = null;
             head.next = null;
-            for (int i = 1; i < this.domain; i += 1) {
+            for (int i = 1; i < this.domain; i++) {
                 symbol = symbols[i];
 
 // If this symbol weights less than the head, then it becomes the new head.
@@ -269,7 +269,7 @@ public class Huff implements None, PostMortem {
             } else {
                 return false;
             }
-            i += 1;
+            i++;
             symbol = back;
         }
         if (symbol != this.table) {
@@ -278,7 +278,7 @@ public class Huff implements None, PostMortem {
         this.width = 0;
         symbol = this.table;
         while (symbol.integer == none) {
-            i -= 1;
+            i--;
             symbol = bits[i] != 0 ? symbol.one : symbol.zero;
         }
         return symbol.integer == integer && i == 0;

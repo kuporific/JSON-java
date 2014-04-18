@@ -143,7 +143,7 @@ public class CDL {
      */
     public static String rowToString(JSONArray ja) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < ja.length(); i += 1) {
+        for (int i = 0; i < ja.length(); i++) {
             if (i > 0) {
                 sb.append(',');
             }
@@ -268,7 +268,7 @@ public class CDL {
             return null;
         }
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < ja.length(); i += 1) {
+        for (int i = 0; i < ja.length(); i++) {
             JSONObject jo = ja.optJSONObject(i);
             if (jo != null) {
                 sb.append(rowToString(jo.toJSONArray(names)));

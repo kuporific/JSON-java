@@ -122,7 +122,7 @@ public class BitInputStream implements BitReader {
         int padding = factor - (int) (this.nrBits % factor);
         boolean result = true;
 
-        for (int i = 0; i < padding; i += 1) {
+        for (int i = 0; i < padding; i++) {
             if (bit()) {
                 result = false;
             }

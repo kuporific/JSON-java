@@ -115,9 +115,9 @@ public class JSONML {
                                 if (token == null) {
                                     throw x.syntaxError("Missing '>' after '<!'.");
                                 } else if (token == XML.LT) {
-                                    i += 1;
+                                    i++;
                                 } else if (token == XML.GT) {
-                                    i -= 1;
+                                    i--;
                                 }
                             } while (i > 0);
                         }
@@ -364,7 +364,7 @@ public class JSONML {
             sb.append('>');
             do {
                 object = ja.get(i);
-                i += 1;
+                i++;
                 if (object != null) {
                     if (object instanceof String) {
                         sb.append(XML.escape(object.toString()));
@@ -442,7 +442,7 @@ public class JSONML {
         } else {
             sb.append('>');
             length = ja.length();
-            for (i = 0; i < length; i += 1) {
+            for (i = 0; i < length; i++) {
                 object = ja.get(i);
                 if (object != null) {
                     if (object instanceof String) {

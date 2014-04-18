@@ -111,7 +111,7 @@ public class XML {
         if (length == 0) {
             throw new JSONException("Empty string.");
         }
-        for (i = 0; i < length; i += 1) {
+        for (i = 0; i < length; i++) {
             if (Character.isWhitespace(string.charAt(i))) {
                 throw new JSONException("'" + string +
                         "' contains a space character.");
@@ -177,9 +177,9 @@ public class XML {
                 if (token == null) {
                     throw x.syntaxError("Missing '>' after '<!'.");
                 } else if (token == LT) {
-                    i += 1;
+                    i++;
                 } else if (token == GT) {
-                    i -= 1;
+                    i--;
                 }
             } while (i > 0);
             return false;
@@ -415,7 +415,7 @@ public class XML {
                     if (value instanceof JSONArray) {
                         ja = (JSONArray)value;
                         length = ja.length();
-                        for (i = 0; i < length; i += 1) {
+                        for (i = 0; i < length; i++) {
                             if (i > 0) {
                                 sb.append('\n');
                             }
@@ -430,7 +430,7 @@ public class XML {
                 } else if (value instanceof JSONArray) {
                     ja = (JSONArray)value;
                     length = ja.length();
-                    for (i = 0; i < length; i += 1) {
+                    for (i = 0; i < length; i++) {
                         value = ja.get(i);
                         if (value instanceof JSONArray) {
                             sb.append('<');
@@ -475,7 +475,7 @@ public class XML {
             if (object instanceof JSONArray) {
                 ja = (JSONArray)object;
                 length = ja.length();
-                for (i = 0; i < length; i += 1) {
+                for (i = 0; i < length; i++) {
                     sb.append(toString(ja.opt(i), tagName == null ? "array" : tagName));
                 }
                 return sb.toString();

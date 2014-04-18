@@ -269,7 +269,6 @@ public class JSONObject extends JSONBase<String> {
      *            a JSONObject.
      */
     public JSONObject(Object bean) {
-        this();
         this.populateMap(bean);
     }
 
@@ -288,7 +287,6 @@ public class JSONObject extends JSONBase<String> {
      *            from the object.
      */
     public JSONObject(Object object, String[] names) {
-        this();
         Class c = object.getClass();
         for (String name : names) {
             try {
@@ -325,7 +323,6 @@ public class JSONObject extends JSONBase<String> {
      *             If any JSONExceptions are detected.
      */
     public JSONObject(String baseName, Locale locale) throws JSONException {
-        this();
         ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale,
                 Thread.currentThread().getContextClassLoader());
 
@@ -343,7 +340,7 @@ public class JSONObject extends JSONBase<String> {
                 String[] path = ((String) key).split("\\.");
                 int last = path.length - 1;
                 JSONObject target = this;
-                for (int i = 0; i < last; i += 1) {
+                for (int i = 0; i < last; i++) {
                     String segment = path[i];
                     JSONObject nextTarget = target.optJSONObject(segment);
                     if (nextTarget == null) {
@@ -453,7 +450,7 @@ public class JSONObject extends JSONBase<String> {
        int i = 0;
        while (iterator.hasNext()) {
            names[i] = (String) iterator.next();
-           i += 1;
+           i++;
        }
        return names;
    }
@@ -474,7 +471,7 @@ public class JSONObject extends JSONBase<String> {
             return null;
         }
         String[] names = new String[length];
-        for (int i = 0; i < length; i += 1) {
+        for (int i = 0; i < length; i++) {
             names[i] = fields[i].getName();
         }
         return names;
@@ -727,7 +724,7 @@ public class JSONObject extends JSONBase<String> {
      *             If the key is null.
      */
     public JSONObject put(String key, long value) throws JSONException {
-        this.put(key, new Long(value));
+        this.put(key, Long.valueOf(value));
         return this;
     }
 
@@ -847,12 +844,9 @@ public class JSONObject extends JSONBase<String> {
 
         char b;
         char c = 0;
-        String hhhh;
-        int i;
-        int len = string.length();
 
         w.write('"');
-        for (i = 0; i < len; i += 1) {
+        for (int i = 0; i < string.length(); i++) {
             b = c;
             c = string.charAt(i);
             switch (c) {
@@ -868,25 +862,17 @@ public class JSONObject extends JSONBase<String> {
                 w.write(c);
                 break;
             case '\b':
-                w.write("\\b");
-                break;
             case '\t':
-                w.write("\\t");
-                break;
             case '\n':
-                w.write("\\n");
-                break;
             case '\f':
-                w.write("\\f");
-                break;
             case '\r':
-                w.write("\\r");
+                w.write(c);
                 break;
             default:
                 if (c < ' ' || (c >= '\u0080' && c < '\u00a0')
                         || (c >= '\u2000' && c < '\u2100')) {
                     w.write("\\u");
-                    hhhh = Integer.toHexString(c);
+                    String hhhh = Integer.toHexString(c);
                     w.write("0000", 0, 4 - hhhh.length());
                     w.write(hhhh);
                 } else {
@@ -998,7 +984,7 @@ public class JSONObject extends JSONBase<String> {
             return null;
         }
         JSONArray ja = new JSONArray();
-        for (int i = 0; i < names.length(); i += 1) {
+        for (int i = 0; i < names.length(); i++) {
             ja.put(this.opt(names.getString(i)));
         }
         return ja;
@@ -1178,7 +1164,7 @@ public class JSONObject extends JSONBase<String> {
     }
 
     static void indent(Writer writer, int indent) throws IOException {
-        for (int i = 0; i < indent; i += 1) {
+        for (int i = 0; i < indent; i++) {
             writer.write(' ');
         }
     }

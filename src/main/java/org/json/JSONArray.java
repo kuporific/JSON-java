@@ -30,6 +30,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -165,8 +166,7 @@ public class JSONArray extends JSONBase<Integer> {
      */
     public JSONArray(Object array) throws JSONException {
         if (array.getClass().isArray()) {
-            int length = Array.getLength(array);
-            for (int i = 0; i < length; i += 1) {
+            for (int i = 0; i < Array.getLength(array); i++) {
                 this.put(JSONObject.wrap(Array.get(array, i)));
             }
         } else {
@@ -187,16 +187,11 @@ public class JSONArray extends JSONBase<Integer> {
      *             If the array contains an invalid number.
      */
     public String join(String separator) throws JSONException {
-        int len = this.length();
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < len; i += 1) {
-            if (i > 0) {
-                sb.append(separator);
-            }
-            sb.append(JSONObject.valueToString(this.myArrayList.get(i)));
-        }
-        return sb.toString();
+        StringJoiner stringJoiner = new StringJoiner(separator);
+        myArrayList.stream().forEach(item -> {
+                    stringJoiner.add(JSONObject.valueToString(item));
+                });
+        return stringJoiner.toString();
     }
 
     /**
@@ -280,7 +275,7 @@ public class JSONArray extends JSONBase<Integer> {
      * @return this.
      */
     public JSONArray put(long value) {
-        this.put(new Long(value));
+        this.put(Long.valueOf(value));
         return this;
     }
 
@@ -397,7 +392,7 @@ public class JSONArray extends JSONBase<Integer> {
      *             If the index is negative.
      */
     public JSONArray put(int index, long value) throws JSONException {
-        this.put(index, new Long(value));
+        this.put(index, Long.valueOf(value));
         return this;
     }
 
@@ -481,7 +476,7 @@ public class JSONArray extends JSONBase<Integer> {
             return null;
         }
         JSONObject jo = new JSONObject();
-        for (int i = 0; i < names.length(); i += 1) {
+        for (int i = 0; i < names.length(); i++) {
             jo.put(names.getString(i), this.opt(i));
         }
         return jo;
@@ -533,7 +528,7 @@ public class JSONArray extends JSONBase<Integer> {
             } else if (length != 0) {
                 final int newindent = indent + indentFactor;
 
-                for (int i = 0; i < length; i += 1) {
+                for (int i = 0; i < length; i++) {
                     if (commanate) {
                         writer.write(',');
                     }

@@ -49,7 +49,7 @@ public class Cookie {
         String       s = string.trim();
         StringBuilder sb = new StringBuilder();
         int          length = s.length();
-        for (int i = 0; i < length; i += 1) {
+        for (int i = 0; i < length; i++) {
             c = s.charAt(i);
             if (c < ' ' || c == '+' || c == '%' || c == '=' || c == ';') {
                 sb.append('%');
@@ -155,8 +155,8 @@ public class Cookie {
             if (c == '+') {
                 c = ' ';
             } else if (c == '%' && i + 2 < length) {
-                int d = JSONTokener.dehexchar(string.charAt(i + 1));
-                int e = JSONTokener.dehexchar(string.charAt(i + 2));
+                int d = Character.digit(string.charAt(i + 1), 16);
+                int e = Character.digit(string.charAt(i + 2), 16);
                 if (d >= 0 && e >= 0) {
                     c = (char)(d * 16 + e);
                     i += 2;

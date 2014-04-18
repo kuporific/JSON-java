@@ -93,7 +93,7 @@ class TrieKeep extends Keep {
                 JSONzip.log("\nNext is null " + this.integer);
                 return false;
             }
-            for (int i = 0; i < 256; i += 1) {
+            for (int i = 0; i < 256; i++) {
                 Node node = this.next[i];
                 if (node != null) {
                     if (!node.postMortem(that.next[i])) {
@@ -255,7 +255,7 @@ class TrieKeep extends Keep {
                     that.capacity);
             return false;
         }
-        for (int i = 0; i < this.length; i += 1) {
+        for (int i = 0; i < this.length; i++) {
             Kim thiskim = this.kim(i);
             Kim thatkim = that.kim(i);
             if (!thiskim.equals(thatkim)) {

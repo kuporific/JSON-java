@@ -160,7 +160,7 @@ public class Kim {
 // to UTF-32 conversion, and then the UTF-32 to Kim conversion.
 
         if (stringLength > 0) {
-            for (int i = 0; i < stringLength; i += 1) {
+            for (int i = 0; i < stringLength; i++) {
                 int c = string.charAt(i);
                 if (c <= 0x7F) {
                     this.length += 1;
@@ -168,7 +168,7 @@ public class Kim {
                     this.length += 2;
                 } else {
                     if (c >= 0xD800 && c <= 0xDFFF) {
-                        i += 1;
+                        i++;
                         int d = string.charAt(i);
                         if (c > 0xDBFF || d < 0xDC00 || d > 0xDFFF) {
                             throw new JSONException("Bad UTF16");
@@ -185,7 +185,7 @@ public class Kim {
             int at = 0;
             int b;
             int sum = 1;
-            for (int i = 0; i < stringLength; i += 1) {
+            for (int i = 0; i < stringLength; i++) {
                 int character = string.charAt(i);
                 if (character <= 0x7F) {
                     bytes[at] = (byte) character;
@@ -205,7 +205,7 @@ public class Kim {
                     at += 1;
                 } else {
                     if (character >= 0xD800 && character <= 0xDBFF) {
-                        i += 1;
+                        i++;
                         character = (((character & 0x3FF) << 10) | (string
                                 .charAt(i) & 0x3FF)) + 65536;
                     }

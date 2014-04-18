@@ -249,7 +249,7 @@ public class Compressor extends JSONzip {
                 write(zipArrayValue, 3);
                 writeValue(value);
             }
-            for (int i = 1; i < length; i += 1) {
+            for (int i = 1; i < length; i++) {
                 if (probe) {
                     log();
                 }
@@ -525,7 +525,7 @@ public class Compressor extends JSONzip {
                 }
             }
             write(1, 2);
-            for (int i = 0; i < string.length(); i += 1) {
+            for (int i = 0; i < string.length(); i++) {
                 write(bcd(string.charAt(i)), 4);
             }
             write(endOfNumber, 4);

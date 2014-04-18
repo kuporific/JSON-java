@@ -312,7 +312,7 @@ public class XMLTokener extends JSONTokener {
          * to string. If we reach an early end, bail.
          */
 
-        for (i = 0; i < length; i += 1) {
+        for (i = 0; i < length; i++) {
             c = next();
             if (c == 0) {
                 return false;
@@ -328,7 +328,7 @@ public class XMLTokener extends JSONTokener {
 
             /* Compare the circle buffer with the to string. */
 
-            for (i = 0; i < length; i += 1) {
+            for (i = 0; i < length; i++) {
                 if (circle[j] != to.charAt(i)) {
                     b = false;
                     break;
