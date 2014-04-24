@@ -45,16 +45,15 @@ public class Cookie {
      * @return       The escaped result.
      */
     public static String escape(String string) {
-        char         c;
-        String       s = string.trim();
-        StringBuilder sb = new StringBuilder();
-        int          length = s.length();
+        String        s = string.trim();
+        int length =  s.length();
+        StringBuilder sb = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
-            c = s.charAt(i);
+            char c = s.charAt(i);
             if (c < ' ' || c == '+' || c == '%' || c == '=' || c == ';') {
                 sb.append('%');
-                sb.append(Character.forDigit((char)((c >>> 4) & 0x0f), 16));
-                sb.append(Character.forDigit((char)(c & 0x0f), 16));
+                sb.append(Character.forDigit((char) ((c >>> 4) & 0x0f), 16));
+                sb.append(Character.forDigit((char) (c & 0x0f), 16));
             } else {
                 sb.append(c);
             }
@@ -79,16 +78,15 @@ public class Cookie {
      * @throws JSONException
      */
     public static JSONObject toJSONObject(String string) throws JSONException {
-        String         name;
-        JSONObject     jo = new JSONObject();
         Object         value;
-        JSONTokener x = new JSONTokener(string);
+        JSONObject     jo = new JSONObject();
+        JSONTokener    x = new JSONTokener(string);
         jo.put("name", x.nextTo('='));
         x.next('=');
         jo.put("value", x.nextTo(';'));
         x.next();
         while (x.more()) {
-            name = unescape(x.nextTo("=;"));
+            String name = unescape(x.nextTo("=;"));
             if (x.next() != '=') {
                 if (name.equals("secure")) {
                     value = Boolean.TRUE;
@@ -149,7 +147,7 @@ public class Cookie {
      */
     public static String unescape(String string) {
         int length = string.length();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(length);
         for (int i = 0; i < length; ++i) {
             char c = string.charAt(i);
             if (c == '+') {
